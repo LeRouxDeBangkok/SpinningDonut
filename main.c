@@ -65,7 +65,7 @@ int main(void) {
         fprintf(stderr, "malloc failed\n");
         return 1;
     }
-    int size = 2;
+    int size = 3;
 
     printf("\x1b[2J");
 
