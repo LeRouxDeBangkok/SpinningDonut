@@ -18,8 +18,8 @@ void render(float a, float b, int buffer_size, float *zBuffer, char *output, int
     memset(output, ' ', buffer_size);
     memset(zBuffer, 0, buffer_size * sizeof(float));
 
-    float scale_x = width * 0.3f;
-    float scale_y = height * 0.6f;
+    float scale_x = width * 0.25f;
+    float scale_y = height * 0.5f;
 
     for (float theta = 0.0f; theta < 6.28f; theta += 0.07f) {
         for (float phi = 0.0f; phi < 6.28f; phi += 0.02f) {
@@ -38,9 +38,7 @@ void render(float a, float b, int buffer_size, float *zBuffer, char *output, int
             if (x < 0 || x >= width || y < 0 || y >= height) continue;
             int o = x + width * y;
 
-            int lum = (int)(8.0f * ((sinTheta * sinA - sinPhi * cosTheta * cosA) * cosB
-                        - sinPhi * cosTheta * sinA - sinTheta * cosA
-                        - cosPhi * cosTheta * sinB));
+            int lum = (int)(8.0f * ((sinTheta * sinA - sinPhi * cosTheta * cosA) * cosB - sinPhi * cosTheta * sinA - sinTheta * cosA - cosPhi * cosTheta * sinB));
 
             int li = lum;
             if (li < 0) li = 0;
@@ -67,7 +65,7 @@ int main(void) {
         fprintf(stderr, "malloc failed\n");
         return 1;
     }
-    int size = 3;
+    int size = 2;
 
     printf("\x1b[2J");
 
