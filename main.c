@@ -9,8 +9,6 @@ void display(const char *output, int buffer_size, int width, float *a, float *b)
     for  (int i = 0; i < buffer_size; i++) {
         putchar(i % width ? output[i] : '\n');
     }
-    *a += 0.00004;
-    *b += 0.00002;
 }
 
 void render (float a, float b, int buffer_size, float *zBuffer, char *output, int height, int width, int size) {
@@ -18,6 +16,9 @@ void render (float a, float b, int buffer_size, float *zBuffer, char *output, in
     char *lum_chars = ".,-~:;=!*#$@";
     memset(output, ' ', buffer_size);
     memset(zBuffer, 0, buffer_size * sizeof(float));
+
+    float scale_x = width / 4.0f;
+    float scale_y = width / 2.8f;
 
     for (float theta = 0; theta < 6.28; theta += 0.07) {
         for (float phi = 0; phi < 6.28; phi += 0.02) {
@@ -31,8 +32,8 @@ void render (float a, float b, int buffer_size, float *zBuffer, char *output, in
             float circleY = sinPhi * circleX * cosA - sinTheta * sinA;
             float norm_z = 1 / (sinPhi * circleX * sinA + sinTheta * cosA + 5);
 
-            int x = (width / 2) + (int)(30 * norm_z * (cosPhi * circleX * cosB + circleY * sinB));
-            int y = (height / 2) + (int)(15 * norm_z * (cosPhi * circleX * sinB - circleY * cosB));
+            int x = (width / 2) + (int)(scale_x * norm_z * (cosPhi * circleX * cosB + circleY * sinB));
+            int y = (height / 2) + (int)(scale_y * norm_z * (cosPhi * circleX * sinB - circleY * cosB));
             int o = x + width * y;
             int lum = (int)(8 * ((sinTheta * sinA - sinPhi * cosTheta * cosA) * cosB - sinPhi * cosTheta * sinA - sinTheta * cosA - cosPhi * cosTheta * sinB));
 
@@ -61,6 +62,8 @@ int main () {
     while (1) {
         render(a, b, buffer_size, zBuffer, output, height, width, size);
         display(output, buffer_size, width, &a, &b);
+        a += 0.04;
+        b += 0.02;
         usleep(30000);
     }
 
